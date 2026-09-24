@@ -1,0 +1,164 @@
+@startuml
+title Рис. 1 - ER-диаграмма базы данных для сервиса гачи-ремиксов (нотация Питера Чена)
+
+skinparam linetype ortho
+skinparam nodesep 60
+skinparam ranksep 60
+hide circle
+hide empty members
+
+' ===== СУЩНОСТИ (прямоугольники) =====
+entity "USER" as user {
+  * **id**
+  --
+  name
+  pass
+  role
+}
+
+entity "REMIXER" as remixer {
+  * **id**
+  --
+  name
+  age
+  registered_at
+}
+
+entity "REMIX" as remix {
+  * **id**
+  --
+  singer
+  resinger
+  preview
+}
+
+entity "SINGER" as singer {
+  * **id**
+  --
+  name
+  genre
+  country
+}
+
+entity "PLAYLIST" as playlist {
+  * **id**
+  --
+  title
+  created_at
+  is_public
+}
+
+entity "ЛЕНТА" as feed {
+  * **id**
+  --
+  updated_at
+}
+
+entity "АЛЬБОМ" as album {
+  * **id**
+  --
+  title
+  year
+}
+
+entity "TAG" as tag {
+  * **id**
+  --
+  label
+  timestamp
+  created_by
+}
+
+entity "CHART" as chart {
+  * **song_id**
+  --
+  place
+  views
+}
+
+entity "COMMENT" as comment {
+  * **id**
+  --
+  text
+  created_at
+}
+
+entity "LIKE" as like {
+  * **id**
+  --
+  created_at
+}
+
+' ===== СВЯЗИ (ромбы) =====
+diamond r_create
+diamond r_has
+diamond r_incl
+diamond r_cons
+diamond r_in
+diamond r_rec
+diamond r_orig
+diamond r_tag
+diamond r_place
+diamond r_write
+diamond r_about
+diamond r_set
+diamond r_get
+diamond r_reply
+
+' ===== НАСЛЕДОВАНИЕ =====
+user <|-- remixer : является
+
+' ===== СВЯЗИ С КРАТНОСТЯМИ =====
+user "1" -- r_create : создаёт
+r_create -- "N" playlist
+
+user "1" -- r_has : имеет
+r_has -- "1" feed
+
+feed "1" -- r_incl : включает
+r_incl -- "N" remix
+
+playlist "1" -- r_cons : состоит из
+r_cons -- "N" remix
+
+album "1" -- r_in : включает
+r_in -- "N" remix
+
+remixer "1" -- r_rec : записывает
+r_rec -- "N" remix
+
+singer "1" -- r_orig : оригинал для
+r_orig -- "N" remix
+
+remix "N" -- r_tag : помечен
+r_tag -- "M" tag
+
+remix "1" -- r_place : занимает
+r_place -- "1" chart
+
+user "1" -- r_write : пишет
+r_write -- "N" comment
+
+comment "N" -- r_about : о
+r_about -- "1" remix
+
+comment "1" -- r_reply : ответ на
+r_reply -- "N" comment
+
+user "1" -- r_set : ставит
+r_set -- "N" like
+
+like "N" -- r_get : получает
+r_get -- "1" remix
+
+legend right
+  Нотация: Питер Чен.
+  Прямоугольник — сущность, ромб — связь (глагол подписан на линии),
+  овалы (атрибуты) перечислены внутри сущностей,
+  подчёркнутый/жирный атрибут — первичный ключ.
+  Кратность читается по подписям 1/N/M у линий:
+  цифра у сущности показывает, сколько её экземпляров
+  участвует в одном экземпляре связи.
+endlegend
+
+@enduml
