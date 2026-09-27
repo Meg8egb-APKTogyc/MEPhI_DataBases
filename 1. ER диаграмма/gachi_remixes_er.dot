@@ -1,0 +1,179 @@
+graph ER {
+  graph [rankdir=LR, nodesep=0.4, ranksep=0.7, fontname="DejaVu Sans"];
+  node [fontname="DejaVu Sans", fontsize=10];
+  edge [fontname="DejaVu Sans", fontsize=9];
+
+  // ===== СУЩНОСТИ =====
+  USER     [shape=box, style=filled, fillcolor="#DDEBF7", label="USER"];
+  REMIXER  [shape=box, style=filled, fillcolor="#DDEBF7", label="REMIXER"];
+  REMIX    [shape=box, style=filled, fillcolor="#DDEBF7", label="REMIX"];
+  SINGER   [shape=box, style=filled, fillcolor="#DDEBF7", label="SINGER"];
+  PLAYLIST [shape=box, style=filled, fillcolor="#DDEBF7", label="PLAYLIST"];
+  FEED     [shape=box, style=filled, fillcolor="#DDEBF7", label="ЛЕНТА"];
+  ALBUM    [shape=box, style=filled, fillcolor="#DDEBF7", label="АЛЬБОМ"];
+  TAG      [shape=box, style=filled, fillcolor="#DDEBF7", label="TAG"];
+  CHART    [shape=box, style=filled, fillcolor="#DDEBF7", label="CHART"];
+  COMMENT  [shape=box, style=filled, fillcolor="#DDEBF7", label="COMMENT"];
+  LIKE     [shape=box, style=filled, fillcolor="#DDEBF7", label="LIKE"];
+
+  // ===== СВЯЗИ =====
+  R_create [shape=diamond, label="создаёт"];
+  R_has    [shape=diamond, label="имеет"];
+  R_incl   [shape=diamond, label="включает"];
+  R_cons   [shape=diamond, label="состоит из"];
+  R_in     [shape=diamond, label="включает"];
+  R_rec    [shape=diamond, label="записывает"];
+  R_orig   [shape=diamond, label="оригинал для"];
+  R_tag    [shape=diamond, label="помечен"];
+  R_place  [shape=diamond, label="занимает"];
+  R_write  [shape=diamond, label="пишет"];
+  R_about  [shape=diamond, label="о"];
+  R_reply  [shape=diamond, label="ответ на"];
+  R_set    [shape=diamond, label="ставит"];
+  R_get    [shape=diamond, label="получает"];
+
+  // ===== НАСЛЕДОВАНИЕ =====
+  ISA [shape=triangle, label="ISA", fontsize=9, width=0.8, height=0.6];
+  USER -- ISA;
+  ISA -- REMIXER;
+
+  // ===== АТРИБУТЫ =====
+  // USER
+  USER_id   [shape=ellipse, label=<<u>id</u>>];
+  USER_name [shape=ellipse, label="name"];
+  USER_pass [shape=ellipse, label="pass"];
+  USER_role [shape=ellipse, label="role"];
+  USER -- USER_id;
+  USER -- USER_name;
+  USER -- USER_pass;
+  USER -- USER_role;
+
+  // REMIXER
+  REMIXER_id            [shape=ellipse, label=<<u>id</u>>];
+  REMIXER_name          [shape=ellipse, label="name"];
+  REMIXER_age           [shape=ellipse, label="age"];
+  REMIXER_registered_at [shape=ellipse, label="registered_at"];
+  REMIXER -- REMIXER_id;
+  REMIXER -- REMIXER_name;
+  REMIXER -- REMIXER_age;
+  REMIXER -- REMIXER_registered_at;
+
+  // REMIX
+  REMIX_id       [shape=ellipse, label=<<u>id</u>>];
+  REMIX_singer   [shape=ellipse, label="singer"];
+  REMIX_resinger [shape=ellipse, label="resinger"];
+  REMIX_preview  [shape=ellipse, label="preview"];
+  REMIX -- REMIX_id;
+  REMIX -- REMIX_singer;
+  REMIX -- REMIX_resinger;
+  REMIX -- REMIX_preview;
+
+  // SINGER
+  SINGER_id      [shape=ellipse, label=<<u>id</u>>];
+  SINGER_name    [shape=ellipse, label="name"];
+  SINGER_genre   [shape=ellipse, label="genre"];
+  SINGER_country [shape=ellipse, label="country"];
+  SINGER -- SINGER_id;
+  SINGER -- SINGER_name;
+  SINGER -- SINGER_genre;
+  SINGER -- SINGER_country;
+
+  // PLAYLIST
+  PLAYLIST_id         [shape=ellipse, label=<<u>id</u>>];
+  PLAYLIST_title      [shape=ellipse, label="title"];
+  PLAYLIST_created_at [shape=ellipse, label="created_at"];
+  PLAYLIST_is_public  [shape=ellipse, label="is_public"];
+  PLAYLIST -- PLAYLIST_id;
+  PLAYLIST -- PLAYLIST_title;
+  PLAYLIST -- PLAYLIST_created_at;
+  PLAYLIST -- PLAYLIST_is_public;
+
+  // ЛЕНТА
+  FEED_id         [shape=ellipse, label=<<u>id</u>>];
+  FEED_updated_at [shape=ellipse, label="updated_at"];
+  FEED -- FEED_id;
+  FEED -- FEED_updated_at;
+
+  // АЛЬБОМ
+  ALBUM_id    [shape=ellipse, label=<<u>id</u>>];
+  ALBUM_title [shape=ellipse, label="title"];
+  ALBUM_year  [shape=ellipse, label="year"];
+  ALBUM -- ALBUM_id;
+  ALBUM -- ALBUM_title;
+  ALBUM -- ALBUM_year;
+
+  // TAG
+  TAG_id         [shape=ellipse, label=<<u>id</u>>];
+  TAG_label      [shape=ellipse, label="label"];
+  TAG_timestamp  [shape=ellipse, label="timestamp"];
+  TAG_created_by [shape=ellipse, label="created_by"];
+  TAG -- TAG_id;
+  TAG -- TAG_label;
+  TAG -- TAG_timestamp;
+  TAG -- TAG_created_by;
+
+  // CHART
+  CHART_song_id [shape=ellipse, label=<<u>song_id</u>>];
+  CHART_place   [shape=ellipse, label="place"];
+  CHART_views   [shape=ellipse, label="views"];
+  CHART -- CHART_song_id;
+  CHART -- CHART_place;
+  CHART -- CHART_views;
+
+  // COMMENT
+  COMMENT_id         [shape=ellipse, label=<<u>id</u>>];
+  COMMENT_text       [shape=ellipse, label="text"];
+  COMMENT_created_at [shape=ellipse, label="created_at"];
+  COMMENT -- COMMENT_id;
+  COMMENT -- COMMENT_text;
+  COMMENT -- COMMENT_created_at;
+
+  // LIKE
+  LIKE_id         [shape=ellipse, label=<<u>id</u>>];
+  LIKE_created_at [shape=ellipse, label="created_at"];
+  LIKE -- LIKE_id;
+  LIKE -- LIKE_created_at;
+
+  // ===== СВЯЗИ С КРАТНОСТЯМИ =====
+  USER -- R_create [label="1"];
+  R_create -- PLAYLIST [label="N"];
+
+  USER -- R_has [label="1"];
+  R_has -- FEED [label="1"];
+
+  FEED -- R_incl [label="1"];
+  R_incl -- REMIX [label="N"];
+
+  PLAYLIST -- R_cons [label="1"];
+  R_cons -- REMIX [label="N"];
+
+  ALBUM -- R_in [label="1"];
+  R_in -- REMIX [label="N"];
+
+  REMIXER -- R_rec [label="1"];
+  R_rec -- REMIX [label="N"];
+
+  SINGER -- R_orig [label="1"];
+  R_orig -- REMIX [label="N"];
+
+  REMIX -- R_tag [label="N"];
+  R_tag -- TAG [label="M"];
+
+  REMIX -- R_place [label="1"];
+  R_place -- CHART [label="1"];
+
+  USER -- R_write [label="1"];
+  R_write -- COMMENT [label="N"];
+
+  COMMENT -- R_about [label="N"];
+  R_about -- REMIX [label="1"];
+
+  COMMENT -- R_reply [label="1"];
+  R_reply -- COMMENT [label="N"];
+
+  USER -- R_set [label="1"];
+  R_set -- LIKE [label="N"];
+
+  LIKE -- R_get [label="N"];
+  R_get -- REMIX [label="1"];
+}
