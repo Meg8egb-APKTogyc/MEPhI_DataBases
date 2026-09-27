@@ -1,179 +1,175 @@
 graph ER {
-  graph [rankdir=LR, nodesep=0.4, ranksep=0.7, fontname="DejaVu Sans"];
-  node [fontname="DejaVu Sans", fontsize=10];
-  edge [fontname="DejaVu Sans", fontsize=9];
+  graph [rankdir=LR, nodesep=0.35, ranksep=0.9, fontname="DejaVu Sans",
+         fontsize=10, bgcolor="white", pad=0.3];
+  node  [fontname="DejaVu Sans", fontsize=9];
+  edge  [fontname="DejaVu Sans", fontsize=8];
 
-  // ===== СУЩНОСТИ =====
-  USER     [shape=box, style=filled, fillcolor="#DDEBF7", label="USER"];
-  REMIXER  [shape=box, style=filled, fillcolor="#DDEBF7", label="REMIXER"];
-  REMIX    [shape=box, style=filled, fillcolor="#DDEBF7", label="REMIX"];
-  SINGER   [shape=box, style=filled, fillcolor="#DDEBF7", label="SINGER"];
-  PLAYLIST [shape=box, style=filled, fillcolor="#DDEBF7", label="PLAYLIST"];
-  FEED     [shape=box, style=filled, fillcolor="#DDEBF7", label="ЛЕНТА"];
-  ALBUM    [shape=box, style=filled, fillcolor="#DDEBF7", label="АЛЬБОМ"];
-  TAG      [shape=box, style=filled, fillcolor="#DDEBF7", label="TAG"];
-  CHART    [shape=box, style=filled, fillcolor="#DDEBF7", label="CHART"];
-  COMMENT  [shape=box, style=filled, fillcolor="#DDEBF7", label="COMMENT"];
-  LIKE     [shape=box, style=filled, fillcolor="#DDEBF7", label="LIKE"];
+  // ============================================================
+  // СУЩНОСТИ
+  // ============================================================
+  USER     [shape=box, style=filled, fillcolor="#DDEBF7", width=1.1, height=0.55, label="USER"];
+  REMIXER  [shape=box, style=filled, fillcolor="#DDEBF7", width=1.1, height=0.55, label="REMIXER"];
+  REMIX    [shape=box, style=filled, fillcolor="#DDEBF7", width=1.1, height=0.55, label="REMIX"];
+  SINGER   [shape=box, style=filled, fillcolor="#DDEBF7", width=1.1, height=0.55, label="SINGER"];
+  PLAYLIST [shape=box, style=filled, fillcolor="#DDEBF7", width=1.2, height=0.55, label="PLAYLIST"];
+  VIEW     [shape=box, style=filled, fillcolor="#DDEBF7", width=1.0, height=0.55, label="VIEW"];
+  ALBUM    [shape=box, style=filled, fillcolor="#DDEBF7", width=1.0, height=0.55, label="ALBUM"];
+  TAG      [shape=box, style=filled, fillcolor="#DDEBF7", width=1.0, height=0.55, label="TAG"];
+  CHART    [shape=box, style=filled, fillcolor="#DDEBF7", width=1.0, height=0.55, label="CHART"];
+  COMMENT  [shape=box, style=filled, fillcolor="#DDEBF7", width=1.1, height=0.55, label="COMMENT"];
+  LIKE     [shape=box, style=filled, fillcolor="#DDEBF7", width=1.0, height=0.55, label="LIKE"];
 
-  // ===== СВЯЗИ =====
-  R_create [shape=diamond, label="создаёт"];
-  R_has    [shape=diamond, label="имеет"];
-  R_incl   [shape=diamond, label="включает"];
-  R_cons   [shape=diamond, label="состоит из"];
-  R_in     [shape=diamond, label="включает"];
-  R_rec    [shape=diamond, label="записывает"];
-  R_orig   [shape=diamond, label="оригинал для"];
-  R_tag    [shape=diamond, label="помечен"];
-  R_place  [shape=diamond, label="занимает"];
-  R_write  [shape=diamond, label="пишет"];
-  R_about  [shape=diamond, label="о"];
-  R_reply  [shape=diamond, label="ответ на"];
-  R_set    [shape=diamond, label="ставит"];
-  R_get    [shape=diamond, label="получает"];
+  // ============================================================
+  // СВЯЗИ
+  // ============================================================
+  R_create     [shape=diamond, style=filled, fillcolor="#FCE4D6", label="создаёт",      width=1.1, height=0.7];
+  R_watch      [shape=diamond, style=filled, fillcolor="#FCE4D6", label="слушает",      width=1.0, height=0.7];
+  R_ref        [shape=diamond, style=filled, fillcolor="#FCE4D6", label="относится к",  width=1.2, height=0.7];
+  R_cons       [shape=diamond, style=filled, fillcolor="#FCE4D6", label="состоит из",   width=1.1, height=0.7];
+  R_in         [shape=diamond, style=filled, fillcolor="#FCE4D6", label="включает",     width=1.1, height=0.7];
+  R_rec        [shape=diamond, style=filled, fillcolor="#FCE4D6", label="записывает",   width=1.1, height=0.7];
+  R_orig       [shape=diamond, style=filled, fillcolor="#FCE4D6", label="оригинал для", width=1.2, height=0.7];
+  R_resing     [shape=diamond, style=filled, fillcolor="#FCE4D6", label="перепевает",   width=1.1, height=0.7];
+  R_pref       [shape=diamond, style=filled, fillcolor="#FCE4D6", label="предпочитает", width=1.2, height=0.7];
+  R_tag        [shape=diamond, style=filled, fillcolor="#FCE4D6", label="помечен",      width=1.0, height=0.7];
+  R_place      [shape=diamond, style=filled, fillcolor="#FCE4D6", label="занимает",     width=1.0, height=0.7];
+  R_write      [shape=diamond, style=filled, fillcolor="#FCE4D6", label="пишет",        width=1.0, height=0.7];
+  R_about      [shape=diamond, style=filled, fillcolor="#FCE4D6", label="о",            width=0.9, height=0.7];
+  R_reply      [shape=diamond, style=filled, fillcolor="#FCE4D6", label="ответ на",     width=1.0, height=0.7];
+  R_set        [shape=diamond, style=filled, fillcolor="#FCE4D6", label="ставит",       width=1.0, height=0.7];
+  R_get        [shape=diamond, style=filled, fillcolor="#FCE4D6", label="получает",     width=1.0, height=0.7];
+  R_tag_create [shape=diamond, style=filled, fillcolor="#FCE4D6", label="создаёт",      width=1.0, height=0.7];
 
-  // ===== НАСЛЕДОВАНИЕ =====
-  ISA [shape=triangle, label="ISA", fontsize=9, width=0.8, height=0.6];
-  USER -- ISA;
-  ISA -- REMIXER;
+  // ============================================================
+  // АТРИБУТЫ  (PK — подчёркнут, FK — пунктирный овал)
+  // ============================================================
+  // --- USER ---
+  U_id   [shape=ellipse, label=<<u>id</u>>];
+  U_name [shape=ellipse, label="name"];
+  U_pass [shape=ellipse, label="pass_hash"];
+  U_role [shape=ellipse, label="role"];
+  USER -- U_id; USER -- U_name; USER -- U_pass; USER -- U_role;
 
-  // ===== АТРИБУТЫ =====
-  // USER
-  USER_id   [shape=ellipse, label=<<u>id</u>>];
-  USER_name [shape=ellipse, label="name"];
-  USER_pass [shape=ellipse, label="pass"];
-  USER_role [shape=ellipse, label="role"];
-  USER -- USER_id;
-  USER -- USER_name;
-  USER -- USER_pass;
-  USER -- USER_role;
+  // --- REMIXER ---
+  Rm_id   [shape=ellipse, label=<<u>id</u>>];
+  Rm_name [shape=ellipse, label="name"];
+  Rm_age  [shape=ellipse, label="age"];
+  Rm_reg  [shape=ellipse, label="registered_at"];
+  Rm_fav  [shape=ellipse, label="favorite_singer_id", style=dashed];
+  REMIXER -- Rm_id; REMIXER -- Rm_name; REMIXER -- Rm_age;
+  REMIXER -- Rm_reg; REMIXER -- Rm_fav;
 
-  // REMIXER
-  REMIXER_id            [shape=ellipse, label=<<u>id</u>>];
-  REMIXER_name          [shape=ellipse, label="name"];
-  REMIXER_age           [shape=ellipse, label="age"];
-  REMIXER_registered_at [shape=ellipse, label="registered_at"];
-  REMIXER -- REMIXER_id;
-  REMIXER -- REMIXER_name;
-  REMIXER -- REMIXER_age;
-  REMIXER -- REMIXER_registered_at;
+  // --- REMIX ---
+  Rx_id      [shape=ellipse, label=<<u>id</u>>];
+  Rx_singer  [shape=ellipse, label="singer_id",   style=dashed];
+  Rx_resing  [shape=ellipse, label="resinger_id", style=dashed];
+  Rx_preview [shape=ellipse, label="preview"];
+  REMIX -- Rx_id; REMIX -- Rx_singer; REMIX -- Rx_resing; REMIX -- Rx_preview;
 
-  // REMIX
-  REMIX_id       [shape=ellipse, label=<<u>id</u>>];
-  REMIX_singer   [shape=ellipse, label="singer"];
-  REMIX_resinger [shape=ellipse, label="resinger"];
-  REMIX_preview  [shape=ellipse, label="preview"];
-  REMIX -- REMIX_id;
-  REMIX -- REMIX_singer;
-  REMIX -- REMIX_resinger;
-  REMIX -- REMIX_preview;
+  // --- SINGER ---
+  S_id      [shape=ellipse, label=<<u>id</u>>];
+  S_name    [shape=ellipse, label="name"];
+  S_age     [shape=ellipse, label="age"];
+  S_genre   [shape=ellipse, label="genre"];
+  S_country [shape=ellipse, label="country"];
+  SINGER -- S_id; SINGER -- S_name; SINGER -- S_age;
+  SINGER -- S_genre; SINGER -- S_country;
 
-  // SINGER
-  SINGER_id      [shape=ellipse, label=<<u>id</u>>];
-  SINGER_name    [shape=ellipse, label="name"];
-  SINGER_genre   [shape=ellipse, label="genre"];
-  SINGER_country [shape=ellipse, label="country"];
-  SINGER -- SINGER_id;
-  SINGER -- SINGER_name;
-  SINGER -- SINGER_genre;
-  SINGER -- SINGER_country;
+  // --- PLAYLIST ---
+  P_id      [shape=ellipse, label=<<u>id</u>>];
+  P_title   [shape=ellipse, label="title"];
+  P_created [shape=ellipse, label="created_at"];
+  P_public  [shape=ellipse, label="is_public"];
+  PLAYLIST -- P_id; PLAYLIST -- P_title; PLAYLIST -- P_created; PLAYLIST -- P_public;
 
-  // PLAYLIST
-  PLAYLIST_id         [shape=ellipse, label=<<u>id</u>>];
-  PLAYLIST_title      [shape=ellipse, label="title"];
-  PLAYLIST_created_at [shape=ellipse, label="created_at"];
-  PLAYLIST_is_public  [shape=ellipse, label="is_public"];
-  PLAYLIST -- PLAYLIST_id;
-  PLAYLIST -- PLAYLIST_title;
-  PLAYLIST -- PLAYLIST_created_at;
-  PLAYLIST -- PLAYLIST_is_public;
+  // --- VIEW ---
+  V_id      [shape=ellipse, label=<<u>id</u>>];
+  V_user    [shape=ellipse, label="user_id",  style=dashed];
+  V_remix   [shape=ellipse, label="remix_id", style=dashed];
+  V_viewed  [shape=ellipse, label="viewed_at"];
+  VIEW -- V_id; VIEW -- V_user; VIEW -- V_remix; VIEW -- V_viewed;
 
-  // ЛЕНТА
-  FEED_id         [shape=ellipse, label=<<u>id</u>>];
-  FEED_updated_at [shape=ellipse, label="updated_at"];
-  FEED -- FEED_id;
-  FEED -- FEED_updated_at;
+  // --- ALBUM ---
+  A_id    [shape=ellipse, label=<<u>id</u>>];
+  A_title [shape=ellipse, label="title"];
+  A_year  [shape=ellipse, label="year"];
+  ALBUM -- A_id; ALBUM -- A_title; ALBUM -- A_year;
 
-  // АЛЬБОМ
-  ALBUM_id    [shape=ellipse, label=<<u>id</u>>];
-  ALBUM_title [shape=ellipse, label="title"];
-  ALBUM_year  [shape=ellipse, label="year"];
-  ALBUM -- ALBUM_id;
-  ALBUM -- ALBUM_title;
-  ALBUM -- ALBUM_year;
+  // --- TAG ---
+  T_id      [shape=ellipse, label=<<u>id</u>>];
+  T_label   [shape=ellipse, label="label"];
+  T_created [shape=ellipse, label="created_at"];
+  T_creator [shape=ellipse, label="creator_id", style=dashed];
+  TAG -- T_id; TAG -- T_label; TAG -- T_created; TAG -- T_creator;
 
-  // TAG
-  TAG_id         [shape=ellipse, label=<<u>id</u>>];
-  TAG_label      [shape=ellipse, label="label"];
-  TAG_timestamp  [shape=ellipse, label="timestamp"];
-  TAG_created_by [shape=ellipse, label="created_by"];
-  TAG -- TAG_id;
-  TAG -- TAG_label;
-  TAG -- TAG_timestamp;
-  TAG -- TAG_created_by;
+  // --- CHART ---
+  C_rid   [shape=ellipse, label=<<u>remix_id</u>>, style=dashed];
+  C_place [shape=ellipse, label="place"];
+  C_views [shape=ellipse, label="views"];
+  CHART -- C_rid; CHART -- C_place; CHART -- C_views;
 
-  // CHART
-  CHART_song_id [shape=ellipse, label=<<u>song_id</u>>];
-  CHART_place   [shape=ellipse, label="place"];
-  CHART_views   [shape=ellipse, label="views"];
-  CHART -- CHART_song_id;
-  CHART -- CHART_place;
-  CHART -- CHART_views;
+  // --- COMMENT ---
+  Cm_id      [shape=ellipse, label=<<u>id</u>>];
+  Cm_text    [shape=ellipse, label="text"];
+  Cm_created [shape=ellipse, label="created_at"];
+  COMMENT -- Cm_id; COMMENT -- Cm_text; COMMENT -- Cm_created;
 
-  // COMMENT
-  COMMENT_id         [shape=ellipse, label=<<u>id</u>>];
-  COMMENT_text       [shape=ellipse, label="text"];
-  COMMENT_created_at [shape=ellipse, label="created_at"];
-  COMMENT -- COMMENT_id;
-  COMMENT -- COMMENT_text;
-  COMMENT -- COMMENT_created_at;
+  // --- LIKE ---
+  L_id      [shape=ellipse, label=<<u>id</u>>];
+  L_created [shape=ellipse, label="created_at"];
+  LIKE -- L_id; LIKE -- L_created;
 
-  // LIKE
-  LIKE_id         [shape=ellipse, label=<<u>id</u>>];
-  LIKE_created_at [shape=ellipse, label="created_at"];
-  LIKE -- LIKE_id;
-  LIKE -- LIKE_created_at;
+  // ============================================================
+  // СВЯЗИ С КРАТНОСТЯМИ
+  // ============================================================
+  USER     -- R_create     [label="1"];
+  R_create -- PLAYLIST     [label="N"];
 
-  // ===== СВЯЗИ С КРАТНОСТЯМИ =====
-  USER -- R_create [label="1"];
-  R_create -- PLAYLIST [label="N"];
+  USER     -- R_watch      [label="1"];
+  R_watch  -- VIEW         [label="N"];
 
-  USER -- R_has [label="1"];
-  R_has -- FEED [label="1"];
+  VIEW     -- R_ref        [label="N"];
+  R_ref    -- REMIX        [label="1"];
 
-  FEED -- R_incl [label="1"];
-  R_incl -- REMIX [label="N"];
+  PLAYLIST -- R_cons       [label="1"];
+  R_cons   -- REMIX        [label="N"];
 
-  PLAYLIST -- R_cons [label="1"];
-  R_cons -- REMIX [label="N"];
+  ALBUM    -- R_in         [label="1"];
+  R_in     -- REMIX        [label="N"];
 
-  ALBUM -- R_in [label="1"];
-  R_in -- REMIX [label="N"];
+  REMIXER  -- R_rec        [label="1"];
+  R_rec    -- REMIX        [label="N"];
 
-  REMIXER -- R_rec [label="1"];
-  R_rec -- REMIX [label="N"];
+  SINGER   -- R_orig       [label="1"];
+  R_orig   -- REMIX        [label="N"];
 
-  SINGER -- R_orig [label="1"];
-  R_orig -- REMIX [label="N"];
+  SINGER   -- R_resing     [label="1"];
+  R_resing -- REMIX        [label="N"];
 
-  REMIX -- R_tag [label="N"];
-  R_tag -- TAG [label="M"];
+  REMIXER  -- R_pref       [label="N"];
+  R_pref   -- SINGER       [label="1"];
 
-  REMIX -- R_place [label="1"];
-  R_place -- CHART [label="1"];
+  REMIX    -- R_tag        [label="N"];
+  R_tag    -- TAG          [label="M"];
 
-  USER -- R_write [label="1"];
-  R_write -- COMMENT [label="N"];
+  REMIX    -- R_place      [label="1"];
+  R_place  -- CHART        [label="1"];
 
-  COMMENT -- R_about [label="N"];
-  R_about -- REMIX [label="1"];
+  USER     -- R_write      [label="1"];
+  R_write  -- COMMENT      [label="N"];
 
-  COMMENT -- R_reply [label="1"];
-  R_reply -- COMMENT [label="N"];
+  COMMENT  -- R_about      [label="N"];
+  R_about  -- REMIX        [label="1"];
 
-  USER -- R_set [label="1"];
-  R_set -- LIKE [label="N"];
+  COMMENT  -- R_reply      [label="1"];
+  R_reply  -- COMMENT      [label="N"];
 
-  LIKE -- R_get [label="N"];
-  R_get -- REMIX [label="1"];
+  USER     -- R_set        [label="1"];
+  R_set    -- LIKE         [label="N"];
+
+  LIKE     -- R_get        [label="N"];
+  R_get    -- REMIX        [label="1"];
+
+  USER     -- R_tag_create [label="1"];
+  R_tag_create -- TAG      [label="N"];
 }
