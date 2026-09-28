@@ -4,7 +4,9 @@
 
 **Предметная область:** сервис публикации, прослушивания и обсуждения гачи-ремиксов.
 
-**Основной сценарий:** пользователь регистрируется → певец выпускает ремикс → ремиксер загружает ремикс → трек попадает в ленту, плейлисты и альбомы → другие пользователи ставят лайки,
+**Основной сценарий:** пользователь регистрируется → певец исполняет оригинал
+композиции → ремиксер делает ремикс на оригинал и загружает его → трек попадает
+в выдачу, плейлисты и альбомы → другие пользователи слушают, ставят лайки,
 пишут комментарии и проставляют теги → система формирует чарт популярности.
 
 ---
@@ -13,41 +15,41 @@
 
 ### Сущности
 
-| Сущность | Первичный ключ | Атрибуты                                  |
-| -------- | -------------- | ----------------------------------------- |
-| USER     | id             | name, pass_hash, role                     |
-| REMIXER  | id             | name, age, registered_at                  |
-| REMIX    | id             | singer_id (FK), resinger_id (FK), preview |
-| SINGER   | id             | name, age, genre, country                 |
-| PLAYLIST | id             | title, created_at, is_public              |
-| VIEW     | id             | user_id (FK), remix_id (FK), viewed_at    |
-| ALBUM    | id             | title, year                               |
-| TAG      | id             | label, created_at, creator_id (FK)        |
-| CHART    | remix_id (FK)  | place, views                              |
-| COMMENT  | id             | text, created_at                          |
-| LIKE     | id             | created_at                                |
+| Сущность | Первичный ключ | Атрибуты                               |
+| -------- | -------------- | -------------------------------------- |
+| USER     | id             | name, pass_hash, role                  |
+| REMIXER  | id             | name, age, registered_at               |
+| SINGER   | id             | name, age, genre, country              |
+| ORIGINAL | id             | title, singer_id (FK), release_year    |
+| REMIX    | id             | original_id (FK), preview              |
+| PLAYLIST | id             | title, created_at, is_public           |
+| VIEW     | id             | user_id (FK), remix_id (FK), viewed_at |
+| ALBUM    | id             | title, year                            |
+| TAG      | id             | label, created_at, creator_id (FK)     |
+| CHART    | remix_id (FK)  | place, views                           |
+| COMMENT  | id             | text, created_at                       |
+| LIKE     | id             | created_at                             |
 
 ### Связи
 
-| Связь             | Кратность | Смысл                    |
-| ----------------- | --------- | ------------------------ |
-| USER → PLAYLIST   | 1:N       | создаёт                  |
-| USER → VIEW       | 1:N       | слушает                  |
-| VIEW → REMIX      | N:1       | относится к              |
-| PLAYLIST → REMIX  | 1:N       | состоит из               |
-| ALBUM → REMIX     | 1:N       | включает                 |
-| REMIXER → REMIX   | 1:N       | записывает               |
-| SINGER → REMIX    | 1:N       | оригинал для (singer_id) |
-| SINGER → REMIX    | 1:N       | перепевает (resinger_id) |
-| REMIXER → SINGER  | N:1       | предпочитает             |
-| REMIX ↔ TAG       | N:M       | помечен                  |
-| REMIX → CHART     | 1:1       | занимает                 |
-| USER → COMMENT    | 1:N       | пишет                    |
-| COMMENT → REMIX   | N:1       | о                        |
-| COMMENT → COMMENT | 1:N       | ответ на (рекурсия)      |
-| USER → LIKE       | 1:N       | ставит                   |
-| LIKE → REMIX      | N:1       | получает                 |
-| USER → TAG        | 1:N       | создаёт (creator_id)     |
+| Связь             | Кратность | Смысл                |
+| ----------------- | --------- | -------------------- |
+| USER → PLAYLIST   | 1:N       | создаёт              |
+| USER → VIEW       | 1:N       | слушает              |
+| VIEW → REMIX      | N:1       | относится к          |
+| PLAYLIST → REMIX  | 1:N       | состоит из           |
+| ALBUM → REMIX     | 1:N       | включает             |
+| REMIXER → REMIX   | 1:N       | записывает           |
+| SINGER → ORIGINAL | 1:N       | исполняет            |
+| ORIGINAL → REMIX  | 1:N       | ремикс на            |
+| REMIX ↔ TAG       | N:M       | помечен              |
+| REMIX → CHART     | 1:1       | занимает             |
+| USER → COMMENT    | 1:N       | пишет                |
+| COMMENT → REMIX   | N:1       | о                    |
+| COMMENT → COMMENT | 1:N       | ответ на (рекурсия)  |
+| USER → LIKE       | 1:N       | ставит               |
+| LIKE → REMIX      | N:1       | получает             |
+| USER → TAG        | 1:N       | создаёт (creator_id) |
 
 ---
 
@@ -58,7 +60,9 @@
 2. **Ссылочная целостность.** Удаление `REMIX` каскадно удаляет связанные
    `LIKE`, `COMMENT`, `VIEW` и запись `CHART`. Удаление `USER` каскадно
    удаляет его `VIEW`, `LIKE`, `COMMENT` и созданные `TAG`. Удаление
-   `REMIXER` каскадно удаляет его `REMIX`.
+   `REMIXER` каскадно удаляет его `REMIX`. Удаление `ORIGINAL` запрещено,
+   пока на него есть `REMIX` (`ON DELETE RESTRICT`). Удаление `SINGER`
+   запрещено, пока у него есть `ORIGINAL`.
 3. **Разграничение прав доступа.** Только `REMIXER` публикует ремиксы;
    `PLAYLIST.is_public` ограничивает видимость плейлистов.
 4. **Связь N:M `REMIX ↔ TAG`.** На физическом уровне реализуется через
@@ -66,7 +70,9 @@
 5. **Отсутствие циклов в `COMMENT`.** Комментарий не может быть ответом сам
    на себя; ответ относится к тому же ремиксу. Ограничение уровня СУБД.
 6. **`REMIXER` и `USER` независимы.** Автор ремикса может существовать без
-   учётной записи в сервисе. Если потребуется связать их — отдельная связь 1:1.
-7. **Лента не хранится.** Формируется запросом поверх `VIEW`, `LIKE`,
+   учётной записи в сервисе.
+7. **`REMIXER` и `SINGER` независимы.** Прямой связи между ними нет; они
+   соотносятся только через цепочку `REMIX → ORIGINAL → SINGER`.
+8. **Лента не хранится.** Формируется запросом поверх `VIEW`, `LIKE`,
    `PLAYLIST`, `REMIX`. Индекс `VIEW(user_id, viewed_at DESC)` ускоряет
    выборку последних прослушиваний.

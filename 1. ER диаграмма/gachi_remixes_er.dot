@@ -9,8 +9,9 @@ graph ER {
   // ============================================================
   USER     [shape=box, style=filled, fillcolor="#DDEBF7", width=1.1, height=0.55, label="USER"];
   REMIXER  [shape=box, style=filled, fillcolor="#DDEBF7", width=1.1, height=0.55, label="REMIXER"];
-  REMIX    [shape=box, style=filled, fillcolor="#DDEBF7", width=1.1, height=0.55, label="REMIX"];
   SINGER   [shape=box, style=filled, fillcolor="#DDEBF7", width=1.1, height=0.55, label="SINGER"];
+  ORIGINAL [shape=box, style=filled, fillcolor="#DDEBF7", width=1.1, height=0.55, label="ORIGINAL"];
+  REMIX    [shape=box, style=filled, fillcolor="#DDEBF7", width=1.1, height=0.55, label="REMIX"];
   PLAYLIST [shape=box, style=filled, fillcolor="#DDEBF7", width=1.2, height=0.55, label="PLAYLIST"];
   VIEW     [shape=box, style=filled, fillcolor="#DDEBF7", width=1.0, height=0.55, label="VIEW"];
   ALBUM    [shape=box, style=filled, fillcolor="#DDEBF7", width=1.0, height=0.55, label="ALBUM"];
@@ -28,9 +29,8 @@ graph ER {
   R_cons       [shape=diamond, style=filled, fillcolor="#FCE4D6", label="состоит из",   width=1.1, height=0.7];
   R_in         [shape=diamond, style=filled, fillcolor="#FCE4D6", label="включает",     width=1.1, height=0.7];
   R_rec        [shape=diamond, style=filled, fillcolor="#FCE4D6", label="записывает",   width=1.1, height=0.7];
-  R_orig       [shape=diamond, style=filled, fillcolor="#FCE4D6", label="оригинал для", width=1.2, height=0.7];
-  R_resing     [shape=diamond, style=filled, fillcolor="#FCE4D6", label="перепевает",   width=1.1, height=0.7];
-  R_pref       [shape=diamond, style=filled, fillcolor="#FCE4D6", label="предпочитает", width=1.2, height=0.7];
+  R_perform    [shape=diamond, style=filled, fillcolor="#FCE4D6", label="исполняет",    width=1.1, height=0.7];
+  R_remixof    [shape=diamond, style=filled, fillcolor="#FCE4D6", label="основа для",    width=1.1, height=0.7];
   R_tag        [shape=diamond, style=filled, fillcolor="#FCE4D6", label="помечен",      width=1.0, height=0.7];
   R_place      [shape=diamond, style=filled, fillcolor="#FCE4D6", label="занимает",     width=1.0, height=0.7];
   R_write      [shape=diamond, style=filled, fillcolor="#FCE4D6", label="пишет",        width=1.0, height=0.7];
@@ -55,16 +55,8 @@ graph ER {
   Rm_name [shape=ellipse, label="name"];
   Rm_age  [shape=ellipse, label="age"];
   Rm_reg  [shape=ellipse, label="registered_at"];
-  Rm_fav  [shape=ellipse, label="favorite_singer_id", style=dashed];
-  REMIXER -- Rm_id; REMIXER -- Rm_name; REMIXER -- Rm_age;
-  REMIXER -- Rm_reg; REMIXER -- Rm_fav;
-
-  // --- REMIX ---
-  Rx_id      [shape=ellipse, label=<<u>id</u>>];
-  Rx_singer  [shape=ellipse, label="singer_id",   style=dashed];
-  Rx_resing  [shape=ellipse, label="resinger_id", style=dashed];
-  Rx_preview [shape=ellipse, label="preview"];
-  REMIX -- Rx_id; REMIX -- Rx_singer; REMIX -- Rx_resing; REMIX -- Rx_preview;
+  REMIXER -- Rm_id; REMIXER -- Rm_name;
+  REMIXER -- Rm_age; REMIXER -- Rm_reg;
 
   // --- SINGER ---
   S_id      [shape=ellipse, label=<<u>id</u>>];
@@ -75,6 +67,20 @@ graph ER {
   SINGER -- S_id; SINGER -- S_name; SINGER -- S_age;
   SINGER -- S_genre; SINGER -- S_country;
 
+  // --- ORIGINAL ---
+  O_id    [shape=ellipse, label=<<u>id</u>>];
+  O_title [shape=ellipse, label="title"];
+  O_sing  [shape=ellipse, label="singer_id",    style=dashed];
+  O_year  [shape=ellipse, label="release_year"];
+  ORIGINAL -- O_id; ORIGINAL -- O_title;
+  ORIGINAL -- O_sing; ORIGINAL -- O_year;
+
+  // --- REMIX ---
+  Rx_id      [shape=ellipse, label=<<u>id</u>>];
+  Rx_orig    [shape=ellipse, label="original_id", style=dashed];
+  Rx_preview [shape=ellipse, label="preview"];
+  REMIX -- Rx_id; REMIX -- Rx_orig; REMIX -- Rx_preview;
+
   // --- PLAYLIST ---
   P_id      [shape=ellipse, label=<<u>id</u>>];
   P_title   [shape=ellipse, label="title"];
@@ -83,10 +89,10 @@ graph ER {
   PLAYLIST -- P_id; PLAYLIST -- P_title; PLAYLIST -- P_created; PLAYLIST -- P_public;
 
   // --- VIEW ---
-  V_id      [shape=ellipse, label=<<u>id</u>>];
-  V_user    [shape=ellipse, label="user_id",  style=dashed];
-  V_remix   [shape=ellipse, label="remix_id", style=dashed];
-  V_viewed  [shape=ellipse, label="viewed_at"];
+  V_id     [shape=ellipse, label=<<u>id</u>>];
+  V_user   [shape=ellipse, label="user_id",  style=dashed];
+  V_remix  [shape=ellipse, label="remix_id", style=dashed];
+  V_viewed [shape=ellipse, label="viewed_at"];
   VIEW -- V_id; VIEW -- V_user; VIEW -- V_remix; VIEW -- V_viewed;
 
   // --- ALBUM ---
@@ -140,14 +146,11 @@ graph ER {
   REMIXER  -- R_rec        [label="1"];
   R_rec    -- REMIX        [label="N"];
 
-  SINGER   -- R_orig       [label="1"];
-  R_orig   -- REMIX        [label="N"];
+  SINGER   -- R_perform    [label="1"];
+  R_perform -- ORIGINAL    [label="N"];
 
-  SINGER   -- R_resing     [label="1"];
-  R_resing -- REMIX        [label="N"];
-
-  REMIXER  -- R_pref       [label="N"];
-  R_pref   -- SINGER       [label="1"];
+  ORIGINAL -- R_remixof    [label="1"];
+  R_remixof -- REMIX       [label="N"];
 
   REMIX    -- R_tag        [label="N"];
   R_tag    -- TAG          [label="M"];
