@@ -131,7 +131,7 @@ graph ER {
   VIEW     -- R_ref        [label="N"];
   R_ref    -- REMIX        [label="1"];
 
-  PLAYLIST -- R_cons       [label="1"];
+  PLAYLIST -- R_cons       [label="N"];
   R_cons   -- REMIX        [label="N"];
 
   ALBUM    -- R_in         [label="1"];
