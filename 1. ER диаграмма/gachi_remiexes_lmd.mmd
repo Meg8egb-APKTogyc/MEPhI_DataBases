@@ -1,0 +1,123 @@
+erDiagram
+    USER {
+        _ id PK
+        _ name
+        _ pass_hash
+        _ role
+    }
+
+    REMIXER {
+        _ id PK
+        _ name
+        _ age
+        _ registered_at
+        _ favorite_singer_id FK
+    }
+
+    SINGER {
+        _ id PK
+        _ name
+        _ age
+        _ genre
+        _ country
+    }
+
+    ALBUM {
+        _ id PK
+        _ title
+        _ year
+    }
+
+    REMIX {
+        _ id PK
+        _ preview
+        _ remixer_id FK
+        _ original_singer_id FK
+        _ resinger_id FK
+        _ album_id FK
+    }
+
+    PLAYLIST {
+        _ id PK
+        _ title
+        _ created_at
+        _ is_public
+        _ user_id FK
+    }
+
+    PLAYLIST_REMIX {
+        _ playlist_id PK, FK
+        _ remix_id PK, FK
+    }
+
+    VIEW {
+        _ id PK
+        _ viewed_at
+        _ user_id FK
+        _ remix_id FK
+    }
+
+    TAG {
+        _ id PK
+        _ label
+        _ created_at
+        _ creator_id FK
+    }
+
+    REMIX_TAG {
+        _ remix_id PK, FK
+        _ tag_id PK, FK
+    }
+
+    CHART {
+        _ remix_id PK, FK
+        _ place
+    }
+
+    COMMENT {
+        _ id PK
+        _ text
+        _ created_at
+        _ user_id FK
+        _ remix_id FK
+        _ parent_id FK
+    }
+
+    LIKE {
+        _ id PK
+        _ created_at
+        _ user_id FK
+        _ remix_id FK
+    }
+
+    %% --- Связи 1:N ---
+    USER     ||--o{ PLAYLIST       : ""
+    USER     ||--o{ VIEW           : ""
+    USER     ||--o{ TAG            : ""
+    USER     ||--o{ COMMENT        : ""
+    USER     ||--o{ LIKE           : ""
+
+    REMIXER  ||--o{ REMIX          : ""
+    SINGER   ||--o{ REMIXER        : ""
+
+    SINGER   ||--o{ REMIX          : ""
+    SINGER   ||--o{ REMIX          : ""
+
+    ALBUM    ||--o{ REMIX          : ""
+
+    REMIX    ||--o{ VIEW           : ""
+    REMIX    ||--o{ COMMENT        : ""
+    REMIX    ||--o{ LIKE           : ""
+
+    %% --- 1:1 ---
+    REMIX    ||--|| CHART          : ""
+
+    %% --- M:N ---
+    PLAYLIST ||--o{ PLAYLIST_REMIX : ""
+    REMIX    ||--o{ PLAYLIST_REMIX : ""
+
+    REMIX    ||--o{ REMIX_TAG      : ""
+    TAG      ||--o{ REMIX_TAG      : ""
+
+    %% --- Самоссылка ---
+    COMMENT  ||--o{ COMMENT        : ""
